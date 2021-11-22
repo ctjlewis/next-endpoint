@@ -13,7 +13,7 @@ A request to `/api/getData?a=4&b=6` will return `{ sum: 10 }`.
 /**
  * Exporting allows you to call this from other API functions directly.
  */
-export const getData = ({ a, b }) => {
+export const getData: ApiFunction = ({ a, b }) => {
   return {
     sum: a + b;
   };
@@ -31,7 +31,7 @@ export default withEndpoint(getData);
  * You can still import this from other API functions and use it directly,
  * simply pass the { session } param.
  */
-export const updateUser = ({ session, id, params }) => {
+export const updateUser: AuthApiFunction = ({ session, id, params }) => {
   if (isAdmin(session.user.sub)) {
     applyChangesToUser({ id, params });
   }
