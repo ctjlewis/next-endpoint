@@ -1,12 +1,12 @@
 import { createEndpoint } from "../createEndpoint";
-import { NextEndpoint } from "./types";
+import { Endpoint } from "./types";
 
 /**
  * Create a simple endpoint from a function that accepts named parameters.
  * 
  * @param fn The function to wrap with a handler.
  */
-export const withEndpoint = <T>(fn: NextEndpoint<T>) => {
+export const withEndpoint = <T>(fn: Endpoint<T>) => {
   /**
    * For a simple endpoint, we only need to create the handler and return it.
    */

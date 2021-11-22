@@ -1,4 +1,4 @@
-import { NextAuthEndpoint, withAuthEndpoint } from '..'
+import { NextAuthEndpoint, NextEndpoint, withAuthEndpoint } from '..'
 
 const sum = (a: number, b: number) => a + b;
 
@@ -10,11 +10,24 @@ describe('sum', () => {
 
 interface TestArgs {
   a: number;
-  b: string;
+  b: number;
 }
 
-export const testFn: NextAuthEndpoint<TestArgs> = ({ session, a, b }) => {
+export const testFn: NextAuthEndpoint = ({ session, a, b }) => {
   return { a, b, session };
+}
+
+export const testFn2: NextAuthEndpoint<TestArgs> = ({ session, a, b }) => {
+  [a, b] = [a, b].map((x) => parseInt(x.toString()));
+  return { a, b, session };
+}
+
+export const testFn3: NextEndpoint = ({ a, b }) => {
+  return { a, b };
+}
+
+export const testFn4: NextEndpoint<TestArgs> = ({ a, b }) => {
+  return { a, b };
 }
 
 export const test = withAuthEndpoint(testFn);
