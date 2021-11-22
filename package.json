@@ -1,0 +1,50 @@
+{
+  "name": "with-next-handler",
+  "author": "C. Lewis <ctj.lewis@icloud.com>",
+  "type": "module",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "preboot": "yarn clean",
+    "boot": "tsc && rollup -c --silent",
+    "bootstrap": "yarn boot && yarn build",
+    "dev": "tszip dev",
+    "build": "tszip build",
+    "test": "tszip test",
+    "test:watch": "tszip test --watch",
+    "test:coverage": "tszip test --coverage",
+    "lint": "tszip lint",
+    "prepare": "tszip build"
+  },
+  "module": "./dist/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": "./dist/index.js",
+    "./*": "./dist/*/index.js"
+  },
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {},
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@tszip/tszip": "^1.15.2",
+    "husky": "^7.0.4",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.2",
+    "yarn-deduplicate": "^3.1.0"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^1.6.1",
+    "next": "^12.0.4"
+  }
+}
