@@ -2,7 +2,7 @@
   "name": "with-next-endpoint",
   "author": "C. Lewis <ctj.lewis@icloud.com>",
   "type": "module",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "license": "MIT",
   "engines": {
     "node": ">=14"

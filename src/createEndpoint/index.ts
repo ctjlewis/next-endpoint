@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next";
-import { NextEndpoint, NextEndpointArgs } from "../withEndpoint";
+import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
 
-export const createEndpoint = <T>(fn: NextEndpoint<T>) => {
+export const createEndpoint = <T>(fn: ApiFunction<T>): NextApiHandler => {
   const handler: NextApiHandler = async (req, res) => {
     try {
       /**
@@ -12,7 +12,7 @@ export const createEndpoint = <T>(fn: NextEndpoint<T>) => {
        * in at runtime, which is true, because we can call the endpoint with
        * missing query params, which will cause an error. So don't do that.
        */
-      const args = req.query as NextEndpointArgs<T>;
+      const args = req.query as ApiFunctionArgs<T>;
       const result = await fn(args);
       return res.status(200).json(result);
     } catch (error) {
