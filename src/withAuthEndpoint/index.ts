@@ -1,20 +1,20 @@
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiHandler } from "next";
 import { createEndpoint } from "../createEndpoint";
-import { EndpointArgs } from "../withEndpoint";
-import { AuthEndpoint } from "./types";
+import { NextEndpointArgs } from "../withEndpoint";
+import { NextAuthEndpoint } from "./types";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthEndpoint<T>) => {
+export const withAuthEndpoint = <T>(fn: NextAuthEndpoint<T>) => {
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**
        * The args for this function, which will be passed as string values.
        */
-      const args = req.query as EndpointArgs<T>;
+      const args = req.query as NextEndpointArgs<T>;
       /**
        * Auth0 authentication information. Handler throws if not valid.
        */
