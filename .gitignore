@@ -6,3 +6,6 @@
 node_modules
 docs-build
 dist
+
+# TSC incremental
+*.tsbuildinfo
