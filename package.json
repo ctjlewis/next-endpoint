@@ -1,8 +1,8 @@
 {
-  "name": "with-next-handler",
+  "name": "with-next-endpoint",
   "author": "C. Lewis <ctj.lewis@icloud.com>",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "engines": {
     "node": ">=14"
