@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next";
-import { createEndpoint } from "../createEndpoint";
+import { createEndpoint, EndpointParams } from "../createEndpoint";
 import { ApiFunction } from "./types";
 
 /**
@@ -7,11 +7,11 @@ import { ApiFunction } from "./types";
  * 
  * @param fn The function to wrap with a handler.
  */
-export const withEndpoint = <T>(fn: ApiFunction<T>): NextApiHandler => {
+export const withEndpoint = <T>(fn: ApiFunction<T>, params: EndpointParams): NextApiHandler => {
   /**
    * For a simple endpoint, we only need to create the handler and return it.
    */
-  return createEndpoint(fn);
+  return createEndpoint(fn, params);
 }
 
 export * from './types'
