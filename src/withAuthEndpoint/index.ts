@@ -8,7 +8,7 @@ import { NextApiHandler } from "next";
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params: EndpointParams): NextApiHandler => {
+export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler => {
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**
