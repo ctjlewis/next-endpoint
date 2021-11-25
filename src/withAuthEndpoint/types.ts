@@ -1,5 +1,5 @@
-import { Session } from "@auth0/nextjs-auth0";
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
+import { Session } from "@auth0/nextjs-auth0";
 
 /**
  * Contains a { session } property with our Auth0 session.

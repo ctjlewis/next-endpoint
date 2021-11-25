@@ -1,14 +1,14 @@
+import { createEndpoint, EndpointParams } from "../createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { NextApiHandler } from "next";
-import { createEndpoint } from "../createEndpoint";
 import { ApiFunctionArgs } from "../withEndpoint";
 import { AuthApiFunction } from "./types";
+import { NextApiHandler } from "next";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>): NextApiHandler => {
+export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params: EndpointParams): NextApiHandler => {
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**
@@ -20,18 +20,21 @@ export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>): NextApiHandler => {
        */
       const session = await getSession(req, res);
       if (!session) {
-        throw 'Invalid session.';
+        throw "Invalid session.";
       }
       /**
        * The authenticated endpoint will create a handler which calls the
        * function with the provided args and the current session.
        */
-      const endpoint = createEndpoint(async () => {
-        return await fn({
-          session,
-          ...args,
-        });
-      });
+      const endpoint = createEndpoint(
+        async () => {
+          return await fn({
+            session,
+            ...args,
+          });
+        },
+        params
+      );
       /**
        * And the output of that handler is returned, passing in the `req` and
        * `res` objects.
@@ -40,12 +43,12 @@ export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>): NextApiHandler => {
     } catch (error) {
       return res.status(403).json(error);
     }
-  }
+  };
   /**
    * Wrap `withApiAuthRequired` around the endpoint, although this is
    * technically redundant since the wrapper ensures there is a valid session.
    */
   return withApiAuthRequired(authEndpoint);
-}
+};
 
-export * from './types';
+export * from "./types";

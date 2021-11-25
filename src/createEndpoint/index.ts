@@ -1,8 +1,8 @@
-import { NextApiHandler } from "next";
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
+import { NextApiHandler, NextApiRequest } from "next";
 
 export interface EndpointParams {
-  method?: 'GET' | 'POST'
+  method?: "GET" | "POST"
 }
 
 /**
@@ -18,33 +18,36 @@ export const createEndpoint = <T>(fn: ApiFunction<T>, params: EndpointParams = {
    * request and return a response.
    */
   const handler: NextApiHandler = async (req, res) => {
-    const { method = 'GET' } = params;
-    /**
-     * Load args from req.query for GET requests and req.body for POST requests.
-     */
-    const requestData =
-      method === 'GET'
-        ? req.query
-        : JSON.parse(req.body);
     /**
      * Execute the API function and respond with the output.
      */
     try {
-      /**
-       * Tell the TypeScript compiler that the request query will be type
-       * NextEndpointArgs<T>.
-       *
-       * The compiler will correctly warn us that arbitrary types could be fed
-       * in at runtime, which is true, because we can call the endpoint with
-       * missing query params, which will cause an error. So don't do that.
-       */
-      const args = requestData as ApiFunctionArgs<T>;
+      const args = getHandlerArgs<T>(req, params);
       const result = await fn(args);
       return res.status(200).json(result);
     } catch (error) {
       return res.status(400).json(error);
     }
-  }
+  };
 
   return handler;
-}
+};
+
+
+/**
+ * Parse the Next.js handler arguments from a request given endpoint params.
+ * 
+ * @returns The parsed arguments. 
+ */
+export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = {}): ApiFunctionArgs<T> => {
+  const { method = "GET" } = params;
+  /**
+   * Load args from req.query for GET requests and req.body for POST requests.
+   */
+  const requestData =
+    method === "GET"
+      ? req.query
+      : JSON.parse(req.body);
+
+  return requestData;
+};
