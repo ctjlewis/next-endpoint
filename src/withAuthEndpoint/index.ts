@@ -10,6 +10,10 @@ import { NextApiHandler } from "next";
  * ...args }` with a Next endpoint handler.
  */
 export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler => {
+  if (window !== undefined || typeof document !== undefined) {
+    throw "Auth Endpoints can only be used in the server.";
+  }
+
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**

@@ -1,8 +1,8 @@
 {
-  "name": "with-next-endpoint",
+  "name": "next-endpoint",
   "author": "C. Lewis <ctj.lewis@icloud.com>",
   "type": "module",
-  "version": "2.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "engines": {
     "node": ">=14"

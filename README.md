@@ -10,12 +10,19 @@ Easily turn simple functions into Next.js handlers. Includes
 A request to `/api/getData?a=4&b=6` will return `{ sum: 10 }`. 
 
 ```ts
+
+interface GetDataArgs {
+  a: number;
+  b: number;
+}
+
 /**
- * Exporting allows you to call this from other API functions directly.
+ * Exporting allows you to call this from other API functions directly, e.g.
+ * in your frontend via `import { getData } from ...`.
  */
-export const getData: ApiFunction = ({ a, b }) => {
+export const getData: ApiFunction<GetDataArgs> = ({ a, b }) => {
   return {
-    sum: a + b;
+    sum: Number(a) + Number(b);
   };
 }
 
@@ -23,6 +30,10 @@ export default withEndpoint(getData);
 ```
 
 ##### Authentication
+
+You can register an `ApiAuthFunction` to get access to the Auth0 `session`
+params. These functions can only run on the server.
+
 ```ts
 /**
  * Every function which relies on auth should accept a { session } param
@@ -31,7 +42,7 @@ export default withEndpoint(getData);
  * You can still import this from other API functions and use it directly,
  * simply pass the { session } param.
  */
-export const updateUser: AuthApiFunction = ({ session, id, params }) => {
+export const updateUser: ApiAuthFunction = ({ session, id, params }) => {
   if (isAdmin(session.user.sub)) {
     applyChangesToUser({ id, params });
   }

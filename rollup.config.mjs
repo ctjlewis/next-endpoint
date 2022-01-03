@@ -1,22 +1,22 @@
 /**
  * Import first for require() shim.
  */
-import { resolveImports } from '@tszip/resolve-imports';
+import { resolveImports } from "@tszip/resolve-imports";
 
-import glob from 'fast-glob';
-import shebang from 'rollup-plugin-preserve-shebang';
+import glob from "fast-glob";
+import shebang from "rollup-plugin-preserve-shebang";
 
 const configs = async () => {
-  const filesToOptimize = await glob('dist/**/*.js');
+  const filesToOptimize = await glob("dist/**/*.js");
   return filesToOptimize.map((input) => ({
     input,
     output: {
       file: input,
-      format: 'es',
+      format: "es",
     },
     external: (id) => id !== input,
     plugins: [resolveImports(), shebang()],
-    onwarn: () => {},
+    onwarn: () => null,
   }));
 };
 
