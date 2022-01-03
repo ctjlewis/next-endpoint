@@ -1,38 +1,33 @@
-import { createEndpoint, EndpointParams } from "../createEndpoint";
+import { createNextEndpoint, EndpointParams } from "../createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { ApiFunctionArgs } from "../withEndpoint";
-import { AuthApiFunction } from "./types";
 import { NextApiHandler } from "next";
+import { NextAuthEndpointFunction } from "./types";
+import { EndpointFunctionArgs } from "../withEndpoint";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler => {
+export const withNextAuthEndpoint = <T>(fn: NextAuthEndpointFunction<T>, params?: EndpointParams): NextApiHandler => {
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**
-       * The args for this function, which will be passed as string values.
+       * The args for this function, which will be passed as string values. A
+       * type assertion is needed because we do not know what data will actually
+       * be provided to the endpoint.
        */
-      const args = req.query as ApiFunctionArgs<T>;
+      const args = req.query as EndpointFunctionArgs<T>;
       /**
        * Auth0 authentication information. Handler throws if not valid.
        */
       const session = await getSession(req, res);
-      if (!session) {
-        throw "Invalid session.";
-      }
+      if (!session) throw "Invalid session.";
       /**
        * The authenticated endpoint will create a handler which calls the
        * function with the provided args and the current session.
        */
-      const endpoint = createEndpoint(
-        async () => {
-          return await fn({
-            session,
-            ...args,
-          });
-        },
+      const endpoint = createNextEndpoint(
+        async () => await fn({ session, ...args }),
         params
       );
       /**
