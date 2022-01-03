@@ -1,14 +1,14 @@
-import { createNextEndpoint, EndpointParams } from "../createEndpoint";
+import { createEndpoint, EndpointParams } from "../createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { NextApiHandler } from "next";
-import { NextAuthEndpointFunction } from "./types";
+import type { AuthEndpointFunction } from "./types";
 import { EndpointFunctionArgs } from "../withEndpoint";
+import { NextApiHandler } from "next";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withNextAuthEndpoint = <T>(fn: NextAuthEndpointFunction<T>, params?: EndpointParams): NextApiHandler => {
+export const withAuthEndpoint = <T>(fn: AuthEndpointFunction<T>, params?: EndpointParams): NextApiHandler => {
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**
@@ -26,7 +26,7 @@ export const withNextAuthEndpoint = <T>(fn: NextAuthEndpointFunction<T>, params?
        * The authenticated endpoint will create a handler which calls the
        * function with the provided args and the current session.
        */
-      const endpoint = createNextEndpoint(
+      const endpoint = createEndpoint(
         async () => await fn({ session, ...args }),
         params
       );

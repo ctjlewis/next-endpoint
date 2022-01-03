@@ -1,6 +1,6 @@
-import { createNextEndpoint, EndpointParams } from "../createEndpoint";
+import { createEndpoint, EndpointParams } from "../createEndpoint";
+import type { EndpointFunction } from "./types";
 import { NextApiHandler } from "next";
-import { EndpointFunction } from "./types";
 
 /**
  * Create a simple endpoint from a function that accepts named parameters.
@@ -11,7 +11,7 @@ export const withNextEndpoint = <T>(fn: EndpointFunction<T>, params?: EndpointPa
   /**
    * For a simple endpoint, we only need to create the handler and return it.
    */
-  return createNextEndpoint(fn, params);
+  return createEndpoint(fn, params);
 };
 
 export * from "./types";

@@ -12,7 +12,7 @@ export interface EndpointParams {
  * @param params Endpoint configuration information.
  * @returns The created Next.js handler.
  */
-export const createNextEndpoint = <T>(fn: EndpointFunction<T>, params: EndpointParams = {}): NextApiHandler => {
+export const createEndpoint = <T>(fn: EndpointFunction<T>, params: EndpointParams = {}): NextApiHandler => {
   /**
    * Create a handler from the API function which will accept args from the
    * request and return a response.

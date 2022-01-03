@@ -9,10 +9,10 @@ export type SessionInfo = { session: Session };
  * Next handler arguments and a { session: Session } containing the Auth0
  * session.
  */
-export type NextAuthEndpointFunctionArgs<T> =
+export type AuthEndpointFunctionArgs<T> =
   SessionInfo & EndpointFunctionArgs<T>;
 /**
  * The authenticated function will be given a { session: Session } argument.
  */
-export type NextAuthEndpointFunction<T = Record<string, unknown>> =
-  (args: NextAuthEndpointFunctionArgs<T>) => ReturnType<EndpointFunction<T>>;
+export type AuthEndpointFunction<T = Record<string, unknown>> =
+  (args: AuthEndpointFunctionArgs<T>) => ReturnType<EndpointFunction<T>>;
