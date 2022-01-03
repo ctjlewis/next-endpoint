@@ -1,4 +1,4 @@
-import { NextAuthEndpointFunction, NextEndpointFunction, withNextAuthEndpoint } from "..";
+import { ApiAuthFunction, ApiFunction, withAuthEndpoint } from "..";
 
 const sum = (a: number, b: number) => a + b;
 
@@ -13,28 +13,28 @@ interface TestArgs {
   b: number;
 }
 
-export const testFn: NextAuthEndpointFunction = ({ session, a, b }) => {
+export const testFn: ApiAuthFunction = ({ session, a, b }) => {
   return { a, b, session };
 };
 
-export const testFn2: NextAuthEndpointFunction<TestArgs> = ({ session, a, b }) => {
+export const testFn2: ApiAuthFunction<TestArgs> = ({ session, a, b }) => {
   [a, b] = [a, b].map((x) => parseInt(x.toString()));
   return { a, b, session };
 };
 
-export const testFn3: NextEndpointFunction = ({ a, b }) => {
+export const testFn3: ApiFunction = ({ a, b }) => {
   return { a, b };
 };
 
-export const testFn4: NextEndpointFunction<TestArgs> = ({ a, b }) => {
+export const testFn4: ApiFunction<TestArgs> = ({ a, b }) => {
   return { a, b };
 };
 
-export const test = withNextAuthEndpoint(testFn4);
+export const test = withAuthEndpoint(testFn4);
 
-const test2Fn = async ({ session, a, b }) => {
+const test2Fn: ApiAuthFunction<TestArgs> = async ({ session, a, b }) => {
   console.log(session.user);
-  return a + b;
+  return Number(a) + Number(b);
 };
 
-export const test2 = withNextAuthEndpoint(test2Fn);
+export const test2 = withAuthEndpoint(test2Fn);

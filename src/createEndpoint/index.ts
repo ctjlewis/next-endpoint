@@ -1,4 +1,4 @@
-import { EndpointFunction, EndpointFunctionArgs } from "../withEndpoint";
+import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
 import { NextApiHandler, NextApiRequest } from "next";
 
 export interface EndpointParams {
@@ -12,7 +12,7 @@ export interface EndpointParams {
  * @param params Endpoint configuration information.
  * @returns The created Next.js handler.
  */
-export const createEndpoint = <T>(fn: EndpointFunction<T>, params: EndpointParams = {}): NextApiHandler => {
+export const createEndpoint = <T>(fn: ApiFunction<T>, params: EndpointParams = {}): NextApiHandler => {
   /**
    * Create a handler from the API function which will accept args from the
    * request and return a response.
@@ -39,7 +39,7 @@ export const createEndpoint = <T>(fn: EndpointFunction<T>, params: EndpointParam
  * 
  * @returns The parsed arguments. 
  */
-export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = {}): EndpointFunctionArgs<T> => {
+export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = {}): ApiFunctionArgs<T> => {
   const { method = "GET" } = params;
   /**
    * Load args from req.query for GET requests and req.body for POST requests.

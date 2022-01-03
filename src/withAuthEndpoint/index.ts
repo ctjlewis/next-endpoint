@@ -1,14 +1,15 @@
+import type { ApiAuthFunction as AuthApiFunction } from "./types";
+
 import { createEndpoint, EndpointParams } from "../createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import type { AuthEndpointFunction } from "./types";
-import { EndpointFunctionArgs } from "../withEndpoint";
+import { ApiFunctionArgs } from "../withEndpoint";
 import { NextApiHandler } from "next";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthEndpointFunction<T>, params?: EndpointParams): NextApiHandler => {
+export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler => {
   const authEndpoint: NextApiHandler = async (req, res) => {
     try {
       /**
@@ -16,7 +17,7 @@ export const withAuthEndpoint = <T>(fn: AuthEndpointFunction<T>, params?: Endpoi
        * type assertion is needed because we do not know what data will actually
        * be provided to the endpoint.
        */
-      const args = req.query as EndpointFunctionArgs<T>;
+      const args = req.query as ApiFunctionArgs<T>;
       /**
        * Auth0 authentication information. Handler throws if not valid.
        */
