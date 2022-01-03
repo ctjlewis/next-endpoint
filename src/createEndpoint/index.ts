@@ -1,5 +1,5 @@
-import { NextApiHandler, NextApiRequest } from "next";
 import { EndpointFunction, EndpointFunctionArgs } from "../withEndpoint";
+import { NextApiHandler, NextApiRequest } from "next";
 
 export interface EndpointParams {
   method?: "GET" | "POST"
