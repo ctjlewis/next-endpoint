@@ -10,6 +10,7 @@ Easily turn simple functions into Next.js handlers. Includes
 A request to `/api/getData?a=4&b=6` will return `{ sum: 10 }`. 
 
 ```ts
+// pages/api/getData.ts
 
 interface GetDataArgs {
   a: number;
@@ -35,6 +36,8 @@ You can register an `ApiAuthFunction` to get access to the Auth0 `session`
 params. These functions can only run on the server.
 
 ```ts
+// pages/api/updateUser.ts
+
 /**
  * Every function which relies on auth should accept a { session } param
  * containing the Auth0 session.
