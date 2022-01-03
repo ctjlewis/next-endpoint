@@ -45,17 +45,22 @@ params. These functions can only run on the server.
  * You can still import this from other API functions and use it directly,
  * simply pass the { session } param.
  */
-export const updateUser: ApiAuthFunction = ({ session, id, params }) => {
+export const updateUser: ApiAuthFunction<UpdateUserArgs> = ({
+  session,
+  id,
+  updates
+}) => {
   if (isAdmin(session.user.sub)) {
-    applyChangesToUser({ id, params });
+    applyChangesToUser({ id, updates });
   }
 }
 
 /**
  * Will wrap with Auth0's `withAuthenticationRequired` and assert a valid 
- * session inside the handler.
+ * session inside the handler, and accept data through POST requests instead of
+ * via URL query params. 
  */
-export default withAuthEndpoint(updateUser);
+export default withAuthEndpoint(updateUser, { method: "POST" });
 ```
 
 ## Developing

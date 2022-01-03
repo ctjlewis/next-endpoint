@@ -37,4 +37,4 @@ const test2Fn: ApiAuthFunction<TestArgs> = async ({ session, a, b }) => {
   return Number(a) + Number(b);
 };
 
-export const test2 = withAuthEndpoint(test2Fn);
+export const test2 = withAuthEndpoint(test2Fn, { method: "POST" });

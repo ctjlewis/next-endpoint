@@ -6,6 +6,24 @@ export interface EndpointParams {
 }
 
 /**
+ * Parse the Next.js handler arguments from a request given endpoint params.
+ * 
+ * @returns The parsed arguments. 
+ */
+export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = {}): ApiFunctionArgs<T> => {
+  const { method = "GET" } = params;
+  /**
+   * Load args from req.query for GET requests and req.body for POST requests.
+   */
+  const requestData =
+    method === "GET"
+      ? req.query
+      : JSON.parse(req.body);
+
+  return requestData;
+};
+
+/**
  * Create a Next.js endpoint handler from an API function.
  * 
  * @param fn The function to wrap with a handler.
@@ -31,23 +49,4 @@ export const createEndpoint = <T>(fn: ApiFunction<T>, params: EndpointParams = {
   };
 
   return handler;
-};
-
-
-/**
- * Parse the Next.js handler arguments from a request given endpoint params.
- * 
- * @returns The parsed arguments. 
- */
-export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = {}): ApiFunctionArgs<T> => {
-  const { method = "GET" } = params;
-  /**
-   * Load args from req.query for GET requests and req.body for POST requests.
-   */
-  const requestData =
-    method === "GET"
-      ? req.query
-      : JSON.parse(req.body);
-
-  return requestData;
 };
