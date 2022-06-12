@@ -1,5 +1,6 @@
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
-import { NextApiHandler, NextApiRequest } from "next";
+import { NextApiRequest } from "next";
+import { NextEndpointHandler } from "../types";
 
 export interface EndpointParams {
   method?: "GET" | "POST"
@@ -10,7 +11,10 @@ export interface EndpointParams {
  * 
  * @returns The parsed arguments. 
  */
-export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = {}): ApiFunctionArgs<T> => {
+export const getHandlerArgs = <ReqType>(
+  req: NextApiRequest,
+  params: EndpointParams = {}
+): ApiFunctionArgs<ReqType> => {
   const { method = "GET" } = params;
   /**
    * Load args from req.query for GET requests and req.body for POST requests.
@@ -30,21 +34,24 @@ export const getHandlerArgs = <T>(req: NextApiRequest, params: EndpointParams = 
  * @param params Endpoint configuration information.
  * @returns The created Next.js handler.
  */
-export const createEndpoint = <T>(fn: ApiFunction<T>, params: EndpointParams = {}): NextApiHandler => {
+export const createEndpoint = <ReqType, ResType = any>(
+  fn: ApiFunction<ReqType, ResType>,
+  params: EndpointParams = {}
+): NextEndpointHandler<ResType> => {
   /**
    * Create a handler from the API function which will accept args from the
    * request and return a response.
    */
-  const handler: NextApiHandler = async (req, res) => {
+  const handler: NextEndpointHandler<ResType> = async (req, res) => {
     /**
      * Execute the API function and respond with the output.
      */
     try {
-      const args = getHandlerArgs<T>(req, params);
+      const args = getHandlerArgs<ReqType>(req, params);
       const result = await fn(args);
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(400).json({ error });
     }
   };
 
