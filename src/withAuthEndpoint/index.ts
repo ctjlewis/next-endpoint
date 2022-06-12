@@ -3,25 +3,31 @@ import type { ApiAuthFunction as AuthApiFunction } from "./types";
 import { createEndpoint, EndpointParams } from "../lib/createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { ApiFunctionArgs } from "../withEndpoint";
-import { NextApiHandler } from "next";
+import { NextEndpointHandler } from "../types";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler<T> => {
+export const withAuthEndpoint = <ReqType, ResType>(
+  fn: AuthApiFunction<ReqType, ResType>,
+  params?: EndpointParams,
+): NextEndpointHandler<ResType> => {
   if (typeof window !== "undefined" || typeof document !== "undefined") {
-    throw "Auth Endpoints can only be used in the server.";
+    throw "Auth Endpoints can only be used in a server context.";
   }
 
-  const authEndpoint: NextApiHandler = async (req, res) => {
+  const authEndpoint: NextEndpointHandler<ResType> = async (req, res) => {
     try {
       /**
        * The args for this function, which will be passed as string values. A
        * type assertion is needed because we do not know what data will actually
        * be provided to the endpoint.
+       * 
+       * We want TypeScript to assert the type here, but note in the return type
+       * that the values could be something like `string | string[] | undefined`.
        */
-      const args = req.query as ApiFunctionArgs<T>;
+      const args = req.query as ApiFunctionArgs<ReqType>;
       /**
        * Auth0 authentication information. Handler throws if not valid.
        */
@@ -31,7 +37,7 @@ export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointPar
        * The authenticated endpoint will create a handler which calls the
        * function with the provided args and the current session.
        */
-      const endpoint = createEndpoint(
+      const endpoint = createEndpoint<ReqType, ResType>(
         async () => await fn({ session, ...args }),
         params
       );
@@ -41,7 +47,9 @@ export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointPar
        */
       return endpoint(req, res);
     } catch (error) {
-      return res.status(403).json(error);
+      return res.status(403).json({
+        error
+      });
     }
   };
   /**

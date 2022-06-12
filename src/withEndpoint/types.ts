@@ -1,18 +1,23 @@
+// export type RuntimeValue<T> 
 /**
  * For [...dynamic] slugs, the all key values are string arrays.
  */
-export type SlugApiFunctionArgs<T> = {
-  readonly [key in keyof T]: string[] | T[key];
+export type SlugApiFunctionArgs<ReqType> = {
+  readonly [key in keyof ReqType]: string[] | ReqType[key] | undefined;
 };
 /**
  * NextJS handlers provide all args from the query string, which means the keys
  * remain but given as strings.
  */
-export type ApiFunctionArgs<T> = {
-  readonly [key in keyof T]: string | T[key];
+export type ApiFunctionArgs<ReqType> = {
+  readonly [key in keyof ReqType]: string | ReqType[key] | undefined;
 };
 /**
  * A function that will be wrapped with a handler and called with the same args.
  */
-export type ApiFunction<T = Record<string, unknown>> =
-  (args: ApiFunctionArgs<T>) => unknown | Promise<unknown>;
+export type ApiFunction<
+  ReqType = Record<string, unknown>,
+  ResType = unknown
+>
+  = (args: ApiFunctionArgs<ReqType>)
+    => ResType | Promise<ResType>;
