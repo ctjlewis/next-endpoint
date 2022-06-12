@@ -4,6 +4,7 @@ import { createEndpoint, EndpointParams } from "../lib/createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { ApiFunctionArgs } from "../withEndpoint";
 import { NextEndpointHandler } from "../types";
+import { toNextEndpointError } from "../lib/errors";
 
 /**
  * Wrap a function that accepts named arguments of form `{ session: Session,
@@ -11,7 +12,14 @@ import { NextEndpointHandler } from "../types";
  */
 export const withAuthEndpoint = <ReqType, ResType>(
   fn: AuthApiFunction<ReqType, ResType>,
+  /**
+   * Request parameters (e.g. method).
+   */
   params?: EndpointParams,
+  /**
+   * Whether to prevent echoing errors into the server response.
+   */
+  dontEchoErrors = false
 ): NextEndpointHandler<ResType> => {
   if (typeof window !== "undefined" || typeof document !== "undefined") {
     throw "Auth Endpoints can only be used in a server context.";
@@ -39,7 +47,8 @@ export const withAuthEndpoint = <ReqType, ResType>(
        */
       const endpoint = createEndpoint<ReqType, ResType>(
         async () => await fn({ session, ...args }),
-        params
+        params,
+        dontEchoErrors
       );
       /**
        * And the output of that handler is returned, passing in the `req` and
@@ -47,9 +56,8 @@ export const withAuthEndpoint = <ReqType, ResType>(
        */
       return endpoint(req, res);
     } catch (error) {
-      return res.status(403).json({
-        error
-      });
+      const errorMessage = toNextEndpointError(error, dontEchoErrors);
+      return res.status(403).json(errorMessage);
     }
   };
   /**
