@@ -8,16 +8,10 @@
     "node": ">=14"
   },
   "scripts": {
-    "preboot": "yarn clean",
-    "boot": "tsc && rollup -c --silent",
-    "bootstrap": "yarn boot && yarn build",
-    "dev": "tszip dev",
-    "build": "tszip build",
-    "test": "tszip test",
-    "test:watch": "tszip test --watch",
-    "test:coverage": "tszip test --coverage",
-    "lint": "tszip lint",
-    "prepare": "tszip build"
+    "export": "tsmodule build",
+    "dev": "tsmodule dev",
+    "test": "ava",
+    "prepublishOnly": "yarn build && yarn test"
   },
   "module": "./dist/index.js",
   "exports": {
@@ -37,14 +31,31 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@tszip/tszip": "1.16.1",
-    "husky": "latest",
-    "tslib": "latest",
-    "typescript": "4.5.4",
-    "yarn-deduplicate": "latest"
+    "@tsmodule/tsmodule": "^40.0.4",
+    "ava": "^4.3.0",
+    "husky": "8.0.1",
+    "next": "12.0.7",
+    "ts-jest": "^28.0.4",
+    "typescript": "4.7.3",
+    "yarn-deduplicate": "5.0.0"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "1.6.2",
-    "next": "12.0.7"
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.test.ts"
+    ],
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--no-warnings",
+      "--loader=@tsmodule/tsmodule"
+    ]
   }
 }

@@ -1,6 +1,6 @@
 import type { ApiAuthFunction as AuthApiFunction } from "./types";
 
-import { createEndpoint, EndpointParams } from "../createEndpoint";
+import { createEndpoint, EndpointParams } from "../lib/createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { ApiFunctionArgs } from "../withEndpoint";
 import { NextApiHandler } from "next";
@@ -9,8 +9,8 @@ import { NextApiHandler } from "next";
  * Wrap a function that accepts named arguments of form `{ session: Session,
  * ...args }` with a Next endpoint handler.
  */
-export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler => {
-  if (window !== undefined || typeof document !== undefined) {
+export const withAuthEndpoint = <T>(fn: AuthApiFunction<T>, params?: EndpointParams): NextApiHandler<T> => {
+  if (typeof window !== "undefined" || typeof document !== "undefined") {
     throw "Auth Endpoints can only be used in the server.";
   }
 
