@@ -9,12 +9,19 @@ import { NextEndpointHandler } from "../types";
  */
 export const withEndpoint = <ReqType, ResType>(
   fn: ApiFunction<ReqType, ResType>,
-  params?: EndpointParams
+  /**
+   * Request parameters (e.g. method).
+   */
+  params?: EndpointParams,
+  /**
+   * Whether to prevent echoing errors into the server response.
+   */
+  dontEchoErrors = false
 ): NextEndpointHandler<ResType> => {
   /**
    * For a simple endpoint, we only need to create the handler and return it.
    */
-  return createEndpoint<ReqType, ResType>(fn, params);
+  return createEndpoint<ReqType, ResType>(fn, params, dontEchoErrors);
 };
 
 export * from "./types";

@@ -1,9 +1,13 @@
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
 import { NextApiRequest } from "next";
 import { NextEndpointHandler } from "../types";
+import { toNextEndpointError } from "./errors";
 
 export interface EndpointParams {
-  method?: "GET" | "POST"
+  /**
+   * The request method to accept data for. Defaults to GET (REST).
+   */
+  method?: "GET" | "POST";
 }
 
 /**
@@ -34,9 +38,10 @@ export const getHandlerArgs = <ReqType>(
  * @param params Endpoint configuration information.
  * @returns The created Next.js handler.
  */
-export const createEndpoint = <ReqType, ResType = any>(
+export const createEndpoint = <ReqType, ResType = unknown>(
   fn: ApiFunction<ReqType, ResType>,
-  params: EndpointParams = {}
+  params: EndpointParams = {},
+  dontEchoErrors = false
 ): NextEndpointHandler<ResType> => {
   /**
    * Create a handler from the API function which will accept args from the
@@ -51,7 +56,8 @@ export const createEndpoint = <ReqType, ResType = any>(
       const result = await fn(args);
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(400).json({ error });
+      const errorMessage = toNextEndpointError(error, dontEchoErrors);
+      return res.status(400).json(errorMessage);
     }
   };
 
