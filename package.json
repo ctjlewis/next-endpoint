@@ -2,7 +2,7 @@
   "name": "next-endpoint",
   "author": "C. Lewis <ctj.lewis@icloud.com>",
   "type": "module",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "license": "MIT",
   "engines": {
     "node": ">=14"
@@ -11,7 +11,7 @@
     "export": "tsmodule build",
     "dev": "tsmodule dev",
     "test": "ava",
-    "prepublishOnly": "yarn build && yarn test"
+    "prepublishOnly": "yarn export && yarn test"
   },
   "module": "./dist/index.js",
   "exports": {
