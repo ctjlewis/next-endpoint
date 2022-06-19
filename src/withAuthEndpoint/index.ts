@@ -46,7 +46,7 @@ export const withAuthEndpoint = <ReqType, ResType>(
        * function with the provided args and the current session.
        */
       const endpoint = createEndpoint<ReqType, ResType>(
-        async () => await fn({ session, ...args }),
+        async () => await fn({ session, ...args }, req, res),
         params,
         dontEchoErrors
       );

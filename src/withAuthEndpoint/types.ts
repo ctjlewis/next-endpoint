@@ -1,5 +1,6 @@
-import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
-import { Session } from "@auth0/nextjs-auth0";
+import type { ApiFunction, ApiFunctionArgs } from "../withEndpoint/types";
+import type { NextApiRequest, NextApiResponse } from "next/types";
+import type { Session } from "@auth0/nextjs-auth0";
 
 /**
  * Contains a { session } property with our Auth0 session.
@@ -19,6 +20,8 @@ export type ApiAuthFunctionArgs<ReqType> =
 export type ApiAuthFunction<
   ReqType = Record<string, unknown>,
   ResType = unknown
->
-  = (args: ApiAuthFunctionArgs<ReqType>)
-    => ReturnType<ApiFunction<ReqType, ResType>>;
+> = (
+  args: ApiAuthFunctionArgs<ReqType>,
+  req?: NextApiRequest,
+  res?: NextApiResponse
+) => ReturnType<ApiFunction<ReqType, ResType>>;
