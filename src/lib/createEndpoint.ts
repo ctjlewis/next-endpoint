@@ -53,7 +53,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
      */
     try {
       const args = getHandlerArgs<ReqType>(req, params);
-      const result = await fn(args);
+      const result = await fn(args, req, res);
       return res.status(200).json(result);
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);

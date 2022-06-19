@@ -1,4 +1,5 @@
-// export type RuntimeValue<T> 
+import type { NextApiRequest, NextApiResponse } from "next/types";
+
 /**
  * For [...dynamic] slugs, the all key values are string arrays.
  */
@@ -17,7 +18,9 @@ export type ApiFunctionArgs<ReqType> = {
  */
 export type ApiFunction<
   ReqType = Record<string, unknown>,
-  ResType = unknown
->
-  = (args: ApiFunctionArgs<ReqType>)
-    => ResType | Promise<ResType>;
+  ResType = unknown,
+> = (
+  args: ApiFunctionArgs<ReqType>,
+  req?: NextApiRequest,
+  res?: NextApiResponse
+) => ResType | Promise<ResType>;
