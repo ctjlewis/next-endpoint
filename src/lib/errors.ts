@@ -1,6 +1,6 @@
 export interface NextEndpointError {
   error: string;
-};
+}
 
 export const toNextEndpointError = (
   err: unknown,
@@ -15,4 +15,4 @@ export const toNextEndpointError = (
   return {
     error,
   };
-}
+};

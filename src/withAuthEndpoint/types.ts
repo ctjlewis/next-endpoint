@@ -23,5 +23,5 @@ export type ApiAuthFunction<
 > = (
   args: ApiAuthFunctionArgs<ReqType>,
   req?: NextApiRequest,
-  res?: NextApiResponse
+  res?: NextApiResponse<ResType>
 ) => ReturnType<ApiFunction<ReqType, ResType>>;

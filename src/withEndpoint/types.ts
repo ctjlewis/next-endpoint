@@ -22,5 +22,5 @@ export type ApiFunction<
 > = (
   args: ApiFunctionArgs<ReqType>,
   req?: NextApiRequest,
-  res?: NextApiResponse
+  res?: NextApiResponse<ResType>
 ) => ResType | Promise<ResType>;

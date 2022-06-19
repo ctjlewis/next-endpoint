@@ -26,7 +26,7 @@ export const testEndpoint = withAuthEndpoint(testFn4);
 
 const test2Fn: ApiAuthFunction<TestArgs> = async ({ session, a, b }) => {
   console.log(session.user);
-  return Number(a) + Number(b);
+  return { a, b };
 };
 
 const a = test2Fn({ session: { user: { name: "test" } }, a: 1, b: 2 });
