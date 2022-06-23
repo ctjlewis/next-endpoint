@@ -8,6 +8,11 @@ export interface EndpointParams {
    * The request method to accept data for. Defaults to GET (REST).
    */
   method?: "GET" | "POST";
+  /**
+   * If set to `manual`, the endpoint will expect you to handle all of the `res`
+   * object manipulation, e.g. `res.status(...).send(...)`.
+   */
+  mode?: "automatic" | "manual";
 }
 
 /**
@@ -43,6 +48,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
   params: EndpointParams = {},
   dontEchoErrors = false
 ): NextEndpointHandler<ResType> => {
+  const { mode = "automatic" } = params;
   /**
    * Create a handler from the API function which will accept args from the
    * request and return a response.
@@ -54,6 +60,11 @@ export const createEndpoint = <ReqType, ResType = unknown>(
     try {
       const args = getHandlerArgs<ReqType>(req, params);
       const result = await fn(args, req, res);
+
+      if (mode === "manual") {
+        return;
+      }
+
       return res.status(200).json(result);
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);
