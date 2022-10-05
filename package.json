@@ -31,7 +31,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@tsmodule/tsmodule": "^40.0.4",
+    "@tsmodule/tsmodule": "^40.8.0",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "ava": "^4.3.0",

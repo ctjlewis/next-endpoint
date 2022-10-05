@@ -3,16 +3,23 @@ export interface NextEndpointError {
 }
 
 export const toNextEndpointError = (
-  err: unknown,
+  error: unknown,
   dontEchoErrors = false,
 ): NextEndpointError => {
-  const isStandardError = err instanceof Error;
-  const error =
-    dontEchoErrors || !isStandardError
-      ? "SERVER ERROR"
-      : err.message;
+  const isStandardError = error instanceof Error;
 
-  return {
-    error,
-  };
+  if (dontEchoErrors) {
+    return {
+      error: "Server error (silenced).",
+    };
+  }
+
+  if (isStandardError) {
+    return { error: error.message };
+  } else if (typeof error === "string") {
+    return { error };
+  } else {
+    return { error: "An error of type other than String or Error was thrown." };
+  }
+
 };
