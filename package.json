@@ -2,7 +2,7 @@
   "name": "next-endpoint",
   "author": "C. Lewis <ctj.lewis@icloud.com>",
   "type": "module",
-  "version": "4.3.2",
+  "version": "4.3.3",
   "license": "MIT",
   "engines": {
     "node": ">=14"
@@ -46,6 +46,7 @@
     "@auth0/nextjs-auth0": "1.6.2",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
+    "http": "^0.0.1-security",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
