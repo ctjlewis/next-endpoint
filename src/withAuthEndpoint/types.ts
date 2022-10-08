@@ -1,7 +1,4 @@
 import type { ApiFunction, ApiFunctionArgs } from "../withEndpoint/types";
-import type { NextApiRequest, NextApiResponse } from "next/types";
-import type { IncomingMessage } from "http";
-import type { ServerResponse } from "http";
 import type { Session } from "@auth0/nextjs-auth0";
 
 /**
@@ -24,6 +21,4 @@ export type ApiAuthFunction<
   ResType = unknown
 > = (
   args: ApiAuthFunctionArgs<ReqType>,
-  req: IncomingMessage | NextApiRequest,
-  res: ServerResponse | NextApiResponse<ResType>,
 ) => ReturnType<ApiFunction<ReqType, ResType>>;
