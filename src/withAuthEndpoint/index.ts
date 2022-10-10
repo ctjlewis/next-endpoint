@@ -1,4 +1,4 @@
-import type { ApiAuthFunction as AuthApiFunction } from "./types";
+import type { ApiAuthFunction } from "./types";
 
 import { createEndpoint, EndpointParams } from "../lib/createEndpoint";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
@@ -11,7 +11,7 @@ import { toNextEndpointError } from "../lib/errors";
  * ...args }` with a Next endpoint handler.
  */
 export const withAuthEndpoint = <ReqType, ResType>(
-  fn: AuthApiFunction<ReqType, ResType>,
+  fn: ApiAuthFunction<ReqType, ResType>,
   /**
    * Request parameters (e.g. method).
    */
