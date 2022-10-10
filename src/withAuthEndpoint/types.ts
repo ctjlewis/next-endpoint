@@ -5,7 +5,7 @@ import type { Session } from "@auth0/nextjs-auth0";
  * Contains a { session } property with our Auth0 session.
  */
 export type SessionInfo = {
-  session: Session
+  session?: Session | null
 };
 /**
  * Next handler arguments and a { session: Session } containing the Auth0
