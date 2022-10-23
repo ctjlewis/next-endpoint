@@ -1,4 +1,4 @@
-import type { ApiFunction, ApiFunctionArgs } from "../withEndpoint/types";
+import type { ApiFunctionArgs } from "../withEndpoint/types";
 import type { Session } from "@auth0/nextjs-auth0";
 
 import { NextServerRequest, NextServerResponse } from "../types";
