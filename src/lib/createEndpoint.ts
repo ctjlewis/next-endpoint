@@ -1,6 +1,5 @@
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
-import { NextApiRequest } from "next";
-import { NextEndpointHandler } from "../types";
+import { NextEndpointHandler, NextServerRequest } from "../types";
 import { toNextEndpointError } from "./errors";
 
 export interface EndpointParams {
@@ -21,19 +20,23 @@ export interface EndpointParams {
  * @returns The parsed arguments. 
  */
 export const getHandlerArgs = <ReqType>(
-  req: NextApiRequest,
+  req: NextServerRequest,
   params: EndpointParams = {}
 ): ApiFunctionArgs<ReqType> => {
   const { method = "GET" } = params;
-  /**
-   * Load args from req.query for GET requests and req.body for POST requests.
-   */
-  const requestData =
-    method === "GET"
-      ? req.query
-      : JSON.parse(req.body);
 
-  return requestData;
+  if (method === "POST") {
+    if (!("body" in req)) {
+      throw "Invalid request object.";
+    }
+
+    return JSON.parse(req.body);
+  }
+
+  /**
+   * Load args from req.query for GET requests.
+   */
+  return req.query as ApiFunctionArgs<ReqType>;
 };
 
 /**

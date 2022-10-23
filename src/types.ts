@@ -6,6 +6,7 @@ export interface NextApiError {
 
 export type NextEndpointHandler<ResType> = NextApiHandler<ResType | NextApiError>;
 
-export type NextServerRequest = NextApiRequest | GetServerSidePropsContext["req"];
+export type NextServerRequest = 
+  NextApiRequest | Pick<GetServerSidePropsContext, "query" | "req">;
 export type NextServerResponse<ResType> = 
-  NextApiResponse<ResType> | GetServerSidePropsContext["res"];
+  NextApiResponse<ResType> | Pick<GetServerSidePropsContext, "res">;
