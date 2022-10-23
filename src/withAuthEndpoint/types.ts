@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next/types";
  * Contains a { session } property with our Auth0 session.
  */
 export type SessionInfo = {
-  session?: Session | null
+  session: Session | null
 };
 /**
  * Next handler arguments and a { session: Session } containing the Auth0
@@ -22,6 +22,6 @@ export type ApiAuthFunction<
   ResType = unknown,
 > = (
   args: ApiAuthFunctionArgs<ReqType>,
-  req?: NextApiRequest,
-  res?: NextApiResponse<ResType>
+  req: NextApiRequest,
+  res: NextApiResponse<ResType>
 ) => ReturnType<ApiFunction<ReqType, ResType>>;
