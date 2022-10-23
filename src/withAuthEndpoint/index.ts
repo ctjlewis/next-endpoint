@@ -1,9 +1,9 @@
 import type { ApiAuthFunction } from "./types";
 
 import { createEndpoint, EndpointParams } from "../lib/createEndpoint";
-import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { ApiFunctionArgs } from "../withEndpoint";
 import { NextEndpointHandler } from "../types";
+import { getSession } from "@auth0/nextjs-auth0";
 import { toNextEndpointError } from "../lib/errors";
 
 /**
@@ -39,7 +39,7 @@ export const withAuthEndpoint = <ReqType, ResType>(
       /**
        * Auth0 authentication information. Handler throws if not valid.
        */
-      const session = await getSession(req, res);
+      const session = getSession(req, res);
       if (!session) throw "Invalid session.";
       /**
        * The authenticated endpoint will create a handler which calls the
@@ -60,11 +60,8 @@ export const withAuthEndpoint = <ReqType, ResType>(
       return res.status(403).json(errorMessage);
     }
   };
-  /**
-   * Wrap `withApiAuthRequired` around the endpoint, although this is
-   * technically redundant since the wrapper ensures there is a valid session.
-   */
-  return withApiAuthRequired(authEndpoint);
+  
+  return authEndpoint;
 };
 
 export * from "./types";
