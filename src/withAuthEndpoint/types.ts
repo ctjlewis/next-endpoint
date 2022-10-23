@@ -25,4 +25,4 @@ export type ApiAuthFunction<
   args: ApiAuthFunctionArgs<ReqType>,
   req: NextServerRequest,
   res: NextServerResponse<ResType>
-) => ReturnType<ApiFunction<ReqType, ResType>>;
+) => ResType | Promise<ResType>;
