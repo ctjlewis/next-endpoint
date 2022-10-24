@@ -1,8 +1,8 @@
 import { USE_GOOGLE_ANALYTICS } from "../globals";
 
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
-import { NextEndpointHandler, NextServerRequest } from "../types";
-import { GetServerSidePropsContext } from "next";
+import { NextApiRequest } from "next";
+import { NextEndpointHandler } from "../types";
 import { googleAnalytics } from "node-google-analytics";
 import { toNextEndpointError } from "./errors";
 
@@ -24,32 +24,26 @@ export interface EndpointParams {
  * @returns The parsed arguments. 
  */
 export const getHandlerArgs = <ReqType>(
-  req: NextServerRequest,
+  req: NextApiRequest,
   params: EndpointParams = {},
-  query: GetServerSidePropsContext["query"] = {}
+  // query?: GetServerSidePropsContext["query"]
 ): ApiFunctionArgs<ReqType> => {
   const { method = "GET" } = params;
 
-  /**
-   * Load args from req.body for POST requests.
-   */
   if (method === "POST") {
+    /**
+     * Load args from req.body for POST requests.
+     */
     if (!("body" in req)) {
-      throw "Invalid request object.";
+      throw "POST request did not include body.";
     }
 
     return JSON.parse(req.body);
-  /**
-   * Load args from req.query for GET requests.
-   */
   } else {
-    if (query) {
-      return query as ApiFunctionArgs<ReqType>;
-    } else if ("query" in req) {
-      return req.query as ApiFunctionArgs<ReqType>;
-    } else {
-      throw "Unable to find query.";
-    }
+    /**
+     * Load args from req.query for GET requests.
+     */
+    return req.query as ApiFunctionArgs<ReqType>;
   }
 };
 
@@ -76,6 +70,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
      */
     try {
       const args = getHandlerArgs<ReqType>(req, params);
+      console.log({ args });
       // const result = await fn(args, req, res, req.query);
       const result = await fn(args, req, res);
 
