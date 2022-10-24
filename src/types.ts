@@ -1,14 +1,19 @@
-import { GetServerSidePropsContext, NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next";
+import { ServerResponse } from "http";
 
 export interface NextApiError {
   error: string;
 }
 
-export type NextEndpointHandler<ResType> = NextApiHandler<ResType | NextApiError>;
-// export type NextEndpointHandlerReplacement<ResType> =
-//   (req: NextServerRequest, res: NextServerResponse<ResType>) => void | Promise<void>;
+// export type NextEndpointHandler<ResType> = NextApiHandler<ResType | NextApiError>;
+export type NextEndpointHandler<ResType> = (
+  req: NextServerRequest, 
+  res: NextServerResponse<ResType>,
+  query?: GetServerSidePropsContext["query"]
+) => ServerResponse | Promise<ServerResponse>;
 
 export type NextServerRequest = 
-  NextApiRequest | GetServerSidePropsContext;
+  NextApiRequest | GetServerSidePropsContext["req"];
+
 export type NextServerResponse<ResType> = 
-  NextApiResponse<ResType> | GetServerSidePropsContext;
+  NextApiResponse<ResType> | GetServerSidePropsContext["res"];

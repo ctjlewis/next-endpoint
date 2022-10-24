@@ -25,7 +25,11 @@ export const withAuthEndpoint = <ReqType, ResType>(
     throw "Auth Endpoints can only be used in a server context.";
   }
 
-  const authEndpoint: NextEndpointHandler<ResType> = async (req, res) => {
+  const authEndpoint: NextEndpointHandler<ResType> = async (
+    req, 
+    res, 
+    query
+  ) => {
     try {
       /**
        * The args for this function, which will be passed as string values. A
@@ -35,7 +39,14 @@ export const withAuthEndpoint = <ReqType, ResType>(
        * We want TypeScript to assert the type here, but note in the return type
        * that the values could be something like `string | string[] | undefined`.
        */
-      const args = req.query as ApiFunctionArgs<ReqType>;
+      let args: ApiFunctionArgs<ReqType>;
+      if (query) {
+        args = query as ApiFunctionArgs<ReqType>;
+      } else if ("query" in req) {
+        args = req.query as ApiFunctionArgs<ReqType>;
+      } else {
+        throw "Unable to find query.";
+      }
       /**
        * Auth0 authentication information. Handler throws if not valid.
        */
@@ -57,7 +68,10 @@ export const withAuthEndpoint = <ReqType, ResType>(
       return endpoint(req, res);
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);
-      return res.status(403).json(errorMessage);
+      
+      res.statusCode = 403;
+      res.setHeader("Content-Type", "application/json");
+      return res.end(JSON.stringify({ error: errorMessage }));
     }
   };
   

@@ -1,6 +1,7 @@
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
 import { NextEndpointHandler, NextServerRequest } from "../types";
 import { toNextEndpointError } from "./errors";
+import { GetServerSidePropsContext } from "next";
 
 export interface EndpointParams {
   /**
@@ -21,22 +22,32 @@ export interface EndpointParams {
  */
 export const getHandlerArgs = <ReqType>(
   req: NextServerRequest,
-  params: EndpointParams = {}
+  params: EndpointParams = {},
+  query: GetServerSidePropsContext["query"] = {}
 ): ApiFunctionArgs<ReqType> => {
   const { method = "GET" } = params;
 
+  /**
+   * Load args from req.body for POST requests.
+   */
   if (method === "POST") {
     if (!("body" in req)) {
       throw "Invalid request object.";
     }
 
     return JSON.parse(req.body);
-  }
-
   /**
    * Load args from req.query for GET requests.
    */
-  return req.query as ApiFunctionArgs<ReqType>;
+  } else {
+    if (query) {
+      return query as ApiFunctionArgs<ReqType>;
+    } else if ("query" in req) {
+      return req.query as ApiFunctionArgs<ReqType>;
+    } else {
+      throw "Unable to find query.";
+    }
+  }
 };
 
 /**
@@ -65,13 +76,17 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       const result = await fn(args, req, res);
 
       if (mode === "manual") {
-        return;
+        return res;
       }
 
-      return res.status(200).json(result);
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      return res.end(JSON.stringify(result));
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);
-      return res.status(400).json(errorMessage);
+      res.statusCode = 500;
+      res.setHeader("Content-Type", "application/json");
+      return res.end(JSON.stringify(errorMessage));
     }
   };
 
