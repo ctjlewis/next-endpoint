@@ -9,6 +9,6 @@ export type NextEndpointHandler<ResType> = NextApiHandler<ResType | NextApiError
 //   (req: NextServerRequest, res: NextServerResponse<ResType>) => void | Promise<void>;
 
 export type NextServerRequest = 
-  NextApiRequest | Pick<GetServerSidePropsContext, "query" | "req">;
+  NextApiRequest | GetServerSidePropsContext;
 export type NextServerResponse<ResType> = 
-  NextApiResponse<ResType> | Pick<GetServerSidePropsContext, "res">;
+  NextApiResponse<ResType> | GetServerSidePropsContext;
