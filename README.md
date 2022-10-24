@@ -63,6 +63,16 @@ export const updateUser: ApiAuthFunction<UpdateUserArgs> = ({
 export default withAuthEndpoint(updateUser, { method: "POST" });
 ```
 
+### Google Analytics
+
+With `GA_MEASUREMENT_ID` and `GA_API_SECRET` env vars set, endpoints will
+automatically send Google Analytics 4 events for endpoint calls using
+[`node-google-analytics`](https://www.npmjs.com/package/node-google-analytics). 
+
+You can also easily use the `googleAnalytics(...)` function within your
+endpoints to send additional custom events server-side.
+
+<!-- 
 ## Developing
 
 This project is a [tszip](https://github.com/tszip/tszip) package written in
@@ -91,4 +101,4 @@ To compile the release build and publish to NPM:
 
 ```
 yarn publish
-```
+``` -->
