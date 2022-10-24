@@ -21,7 +21,7 @@ export type ApiFunction<
   ResType = unknown,
 > = (
   args: ApiFunctionArgs<ReqType>,
-  req: NextServerRequest,
-  res: NextServerResponse<ResType>,
+  req?: NextServerRequest,
+  res?: NextServerResponse<ResType>,
   // query: NextServerQuery
 ) => ResType | Promise<ResType>;

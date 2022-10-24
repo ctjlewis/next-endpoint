@@ -70,7 +70,6 @@ export const createEndpoint = <ReqType, ResType = unknown>(
      */
     try {
       const args = getHandlerArgs<ReqType>(req, params);
-      console.log({ args });
       // const result = await fn(args, req, res, req.query);
       const result = await fn(args, req, res);
 
