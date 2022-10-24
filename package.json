@@ -8,10 +8,10 @@
     "node": ">=14"
   },
   "scripts": {
-    "export": "tsmodule build",
+    "build": "tsmodule build -b",
     "dev": "tsmodule dev",
     "test": "ava",
-    "prepublishOnly": "yarn export && yarn test"
+    "prepublishOnly": "yarn build && yarn test"
   },
   "module": "./dist/index.js",
   "exports": {
@@ -47,6 +47,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "http": "^0.0.1-security",
+    "node-google-analytics": "^1.1.5",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },

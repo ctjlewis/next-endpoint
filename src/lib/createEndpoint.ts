@@ -1,6 +1,9 @@
+import { USE_GOOGLE_ANALYTICS } from "../globals";
+
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
 import { NextEndpointHandler, NextServerRequest } from "../types";
 import { GetServerSidePropsContext } from "next";
+import { googleAnalytics } from "node-google-analytics";
 import { toNextEndpointError } from "./errors";
 
 export interface EndpointParams {
@@ -62,7 +65,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
   params: EndpointParams = {},
   dontEchoErrors = false
 ): NextEndpointHandler<ResType> => {
-  const { mode = "automatic" } = params;
+  const { mode = "automatic", method = "GET" } = params;
   /**
    * Create a handler from the API function which will accept args from the
    * request and return a response.
@@ -76,6 +79,19 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       // const result = await fn(args, req, res, req.query);
       const result = await fn(args, req, res);
 
+      if (USE_GOOGLE_ANALYTICS) {
+        await googleAnalytics(
+          { req }, 
+          {
+            name: "endpoint",
+            params: {
+              method,
+              endpoint: req.url ?? "unknown",
+            }
+          }
+        );
+      }
+
       if (mode === "manual") {
         return res;
       }
@@ -85,6 +101,19 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       return res.end(JSON.stringify(result));
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);
+
+      if (USE_GOOGLE_ANALYTICS) {
+        await googleAnalytics(
+          { req }, 
+          {
+            name: "endpointFailure",
+            params: {
+              method,
+              endpoint: req.url ?? "unknown",
+            }
+          }
+        );
+      }
       
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json");
