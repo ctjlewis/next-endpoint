@@ -50,7 +50,8 @@ export const withAuthEndpoint = <ReqType, ResType>(
        * function with the provided args and the current session.
        */
       const endpoint = createEndpoint<ReqType, ResType>(
-        async () => await fn({ session, ...args }, req, res, query),
+        // async () => await fn({ session, ...args }, req, res, query),
+        async () => await fn({ session, ...args }, req, res),
         params,
         dontEchoErrors
       );
@@ -58,6 +59,7 @@ export const withAuthEndpoint = <ReqType, ResType>(
        * And the output of that handler is returned, passing in the `req` and
        * `res` objects.
        */
+      // return endpoint(req, res, query);
       return endpoint(req, res);
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);

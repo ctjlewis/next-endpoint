@@ -1,4 +1,4 @@
-import { NextServerQuery, NextServerRequest, NextServerResponse } from "../types";
+import { NextServerRequest, NextServerResponse } from "../types";
 
 /**
  * For [...dynamic] slugs, the all key values are string arrays.
@@ -23,5 +23,5 @@ export type ApiFunction<
   args: ApiFunctionArgs<ReqType>,
   req: NextServerRequest,
   res: NextServerResponse<ResType>,
-  query: NextServerQuery
+  // query: NextServerQuery
 ) => ResType | Promise<ResType>;
