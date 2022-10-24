@@ -7,13 +7,15 @@ export interface NextApiError {
 
 // export type NextEndpointHandler<ResType> = NextApiHandler<ResType | NextApiError>;
 export type NextEndpointHandler<ResType> = (
-  req: NextServerRequest, 
-  res: NextServerResponse<ResType>,
-  query?: GetServerSidePropsContext["query"]
+  req: NextApiRequest, 
+  res: NextApiResponse<ResType>,
 ) => ServerResponse | Promise<ServerResponse>;
 
 export type NextServerRequest = 
   NextApiRequest | GetServerSidePropsContext["req"];
 
 export type NextServerResponse<ResType> = 
-  NextApiResponse<ResType> | GetServerSidePropsContext["res"];
+  NextApiResponse<ResType> | GetServerSidePropsContext["res"] | NextApiError;
+
+export type NextServerQuery = 
+  NextApiRequest["query"] | GetServerSidePropsContext["query"];

@@ -1,7 +1,7 @@
 import { ApiFunction, ApiFunctionArgs } from "../withEndpoint";
 import { NextEndpointHandler, NextServerRequest } from "../types";
-import { toNextEndpointError } from "./errors";
 import { GetServerSidePropsContext } from "next";
+import { toNextEndpointError } from "./errors";
 
 export interface EndpointParams {
   /**
@@ -73,7 +73,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
      */
     try {
       const args = getHandlerArgs<ReqType>(req, params);
-      const result = await fn(args, req, res);
+      const result = await fn(args, req, res, req.query);
 
       if (mode === "manual") {
         return res;
@@ -84,6 +84,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       return res.end(JSON.stringify(result));
     } catch (error) {
       const errorMessage = toNextEndpointError(error, dontEchoErrors);
+      
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json");
       return res.end(JSON.stringify(errorMessage));
