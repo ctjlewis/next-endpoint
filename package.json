@@ -31,7 +31,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@tsmodule/tsmodule": "^40.8.0",
+    "@tsmodule/tsmodule": "^40.9.0",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "ava": "^4.3.0",
@@ -47,7 +47,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "http": "^0.0.1-security",
-    "node-google-analytics": "^1.1.7",
+    "node-google-analytics": "^1.1.8",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
