@@ -74,8 +74,9 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       const result = await fn(args, req, res);
 
       if (USE_GOOGLE_ANALYTICS) {
+        const { cookies } = req;
         await googleAnalytics(
-          { req }, 
+          { cookies }, 
           {
             name: "endpoint",
             params: {
@@ -97,8 +98,9 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       const errorMessage = toNextEndpointError(error, dontEchoErrors);
 
       if (USE_GOOGLE_ANALYTICS) {
+        const { cookies } = req;
         await googleAnalytics(
-          { req }, 
+          { cookies }, 
           {
             name: "endpointFailure",
             params: {

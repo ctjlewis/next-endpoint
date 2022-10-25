@@ -47,7 +47,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "http": "^0.0.1-security",
-    "node-google-analytics": "^1.1.8",
+    "node-google-analytics": "^1.1.11",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
