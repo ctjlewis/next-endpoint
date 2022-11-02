@@ -76,10 +76,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       if (USE_GOOGLE_ANALYTICS) {
         const { cookies } = req;
         await googleAnalytics(
-          { 
-            cookies,
-            measurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-          }, 
+          { cookies }, 
           {
             name: "endpoint",
             params: {
