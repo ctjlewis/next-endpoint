@@ -2717,10 +2717,10 @@ node-fetch@2.6.1:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-google-analytics@^1.1.11:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/node-google-analytics/-/node-google-analytics-1.1.11.tgz#4ace9caa96825697e3309bb3c0de165e3949399b"
-  integrity sha512-9pzH2KuRio668DfM6vmTkCjYraYyQVt2gkMJMIVi5jvUcTSA6JXgky/js9bDB40xQvunH9fPRUUtPdC6ywbhpQ==
+node-google-analytics@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/node-google-analytics/-/node-google-analytics-1.2.0.tgz#e2bbe5dcbd717f65a4888b05e9d3327d7ec867b9"
+  integrity sha512-WgKA37VpmzXsBIPgKME3DxY6z8cGkBvHRzXyaMOjJp4LD2nQJLOLaT+05wremsXTyEIr5lyRhwuQOWQ1GUIkoA==
 
 node-html-parser@1.4.9:
   version "1.4.9"
