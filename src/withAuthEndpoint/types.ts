@@ -23,7 +23,7 @@ export type ApiAuthFunction<
   ResType = unknown,
 > = (
   args: ApiAuthFunctionArgs<ReqType>,
-  req?: NextServerRequest,
-  res?: NextServerResponse<ResType>,
+  req: NextServerRequest,
+  res: NextServerResponse<ResType>,
   // query: NextServerQuery
 ) => ResType | Promise<ResType>;
