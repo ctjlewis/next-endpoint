@@ -47,6 +47,8 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "njwt": "^1.2.0",
     "node-google-analytics": "^2.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
