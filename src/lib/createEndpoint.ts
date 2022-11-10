@@ -113,7 +113,12 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json");
-      return res.end(JSON.stringify(errorMessage));
+      res.end(JSON.stringify(errorMessage));
+
+      /**
+       * Pass error up to server.
+       */
+      throw new Error(errorMessage.error);
     }
   };
 
