@@ -38,7 +38,7 @@ export const getHandlerArgs = <ReqType>(
       throw "POST request did not include body.";
     }
 
-    return JSON.parse(req.body);
+    return req.body as ApiFunctionArgs<ReqType>;
   } else {
     /**
      * Load args from req.query for GET requests.
