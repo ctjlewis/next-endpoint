@@ -61,12 +61,14 @@ export const withAuthEndpoint = <ReqType, ResType>(
        */
       // return endpoint(req, res, query);
       return endpoint(req, res);
-    } catch (error) {
-      const errorMessage = toNextEndpointError(error, dontEchoErrors);
+    } catch (e) {
+      const { error } = toNextEndpointError(e, dontEchoErrors);
       
       res.statusCode = 403;
       res.setHeader("Content-Type", "application/json");
-      return res.end(JSON.stringify({ error: errorMessage }));
+      res.end(JSON.stringify(error));
+
+      throw new Error(error);
     }
   };
   

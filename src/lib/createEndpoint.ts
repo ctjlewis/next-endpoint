@@ -94,9 +94,7 @@ export const createEndpoint = <ReqType, ResType = unknown>(
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json");
       return res.end(JSON.stringify(result));
-    } catch (error) {
-      const errorMessage = toNextEndpointError(error, dontEchoErrors);
-
+    } catch (e) {
       if (USE_GOOGLE_ANALYTICS) {
         const { cookies } = req;
         await googleAnalytics(
@@ -110,15 +108,14 @@ export const createEndpoint = <ReqType, ResType = unknown>(
           }
         );
       }
+
+      const { error } = toNextEndpointError(e, dontEchoErrors);
       
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify(errorMessage));
+      res.end(JSON.stringify(error));
 
-      /**
-       * Pass error up to server.
-       */
-      throw new Error(errorMessage.error);
+      throw new Error(error);
     }
   };
 
